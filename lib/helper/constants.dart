@@ -1,3 +1,3 @@
-class constants {
+class Constants {
   static String myName = "";
 }

@@ -1,7 +1,6 @@
 import 'package:chat_app/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
 
 class AuthMethods {
@@ -9,6 +8,7 @@ class AuthMethods {
 
   Users? _userFromFirebaseUser(User user) {
     //  user = _auth.currentUser;
+    // ignore: unnecessary_null_comparison
     return user != null ? Users(userId: user.uid) : null;
   }
 

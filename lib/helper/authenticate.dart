@@ -3,7 +3,7 @@ import 'package:chat_app/view/signup.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
-  Authenticate({Key? key}) : super(key: key);
+  const Authenticate({Key? key}) : super(key: key);
 
   @override
   State<Authenticate> createState() => _AuthenticateState();
@@ -25,6 +25,5 @@ class _AuthenticateState extends State<Authenticate> {
     } else {
       return SignUp(toggleView);
     }
-    ;
   }
 }

@@ -32,11 +32,12 @@ class DatabaseMethods {
         .get();
   }
 
-  getEmailByUserName(dynamic userName) async {
+  getEmailByUserName(String userName) async {
     return await FirebaseFirestore.instance
         .collection("users")
         .where("name", isEqualTo: userName)
-        .snapshots();
+        .where("email")
+        .get();
   }
 
   uploadUserInfo(userMap) {
@@ -46,7 +47,7 @@ class DatabaseMethods {
     });
   }
 
-  createChatRoom(String chatRoomId, chatRoomMap) {
+  createChatRoom(String chatRoomId, chatRoomMap, email) {
     FirebaseFirestore.instance
         .collection("chatRoom")
         .doc(chatRoomId)
@@ -55,6 +56,14 @@ class DatabaseMethods {
       Get.snackbar(e.toString(), "",
           snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.white);
     });
+    // FirebaseFirestore.instance
+    //     .collection("chatRoom")
+    //     .doc(chatRoomId)
+    //     .set(email)
+    //     .catchError((e) {
+    //   Get.snackbar(e.toString(), "",
+    //       snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.white);
+    // });
   }
 
   addConversation(String chatRoomId, messageMap) {
@@ -70,7 +79,7 @@ class DatabaseMethods {
   }
 
   getConversation(String chatRoomId) async {
-    return await FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection("chatRoom")
         .doc(chatRoomId)
         .collection("chats")
@@ -79,9 +88,15 @@ class DatabaseMethods {
   }
 
   getChatRooms(String userName) async {
-    return await FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection("chatRoom")
         .where("user", arrayContains: userName)
         .snapshots();
   }
 }
+
+// Map a = {
+//   "chatroomId": "saijith_thwasim ",
+//   "user": ["thwasim", "saijith"],
+//   "userEmail": "thwasim@gmail.com "
+// };

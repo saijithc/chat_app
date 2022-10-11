@@ -2,9 +2,7 @@ import 'package:chat_app/helper/helperfuncction.dart';
 import 'package:chat_app/services/auth.dart';
 import 'package:chat_app/services/database.dart';
 import 'package:chat_app/view/chatroom.dart';
-import 'package:chat_app/view/signup.dart';
 import 'package:chat_app/widgets/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Signin extends StatefulWidget {

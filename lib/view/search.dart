@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:chat_app/helper/constants.dart';
+import 'package:chat_app/model/user.dart';
 import 'package:chat_app/services/database.dart';
 import 'package:chat_app/view/conversion_screen.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -27,7 +25,7 @@ class _SearchScreenState extends State<SearchScreen> {
             shrinkWrap: true,
             itemCount: searchSnapshot.length,
             itemBuilder: (context, index) {
-              return SearchTile(
+              return searchTile(
                   userName: searchSnapshot![index].get("name"),
                   userEmail: searchSnapshot![index].get("email"));
             },
@@ -45,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  Widget SearchTile({required String userName, required String userEmail}) {
+  Widget searchTile({required String userName, required String userEmail}) {
     final height = MediaQuery.of(context).size.height;
     // final width = MediaQuery.of(context).size.width;
     return SizedBox(
@@ -87,20 +85,21 @@ class _SearchScreenState extends State<SearchScreen> {
   //---------------create chatroom--send user conversation screen---------
 
   createChatRoom({String? userName, userEmail}) {
-    //print("${constants.myName}");
-    if (userName != constants.myName) {
-      String chatroomId = getChatRoomId(userName!, constants.myName);
-      List<String> users = [userName, constants.myName];
+    if (userName != Constants.myName) {
+      String chatroomId = getChatRoomId(userName!, Constants.myName);
+
+      List<String> users = [userName, Constants.myName];
       Map<String, dynamic> chatRoomMap = {
         "user": users,
-        "chatroomId": chatroomId
+        "chatroomId": chatroomId,
+        "userEmail": userEmail.toString()
       };
-      DatabaseMethods().createChatRoom(chatroomId, chatRoomMap);
+      DatabaseMethods().createChatRoom(chatroomId, chatRoomMap, userEmail);
       Navigator.of(context).push(MaterialPageRoute(
           builder: (ctx) => Conversation(
                 chatRoomId: chatroomId,
                 userName: userName,
-                email: userEmail,
+                email: userEmail.toString(),
               )));
     } else {
       Get.snackbar("you cant send message to yourself", "",
@@ -147,15 +146,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                     initiateSearch();
                                   },
                                   controller: searchController,
-                                  decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                          onPressed: () {
-                                            // initiateSearch();
-                                          },
-                                          icon: const Icon(Icons.search)),
+                                  decoration: const InputDecoration(
+                                      // suffixIcon: IconButton(
+                                      //     onPressed: () {
+                                      //       // initiateSearch();
+                                      //     },
+                                      //     icon: const Icon(Icons.search)),
+
                                       hintText: "search username",
-                                      hintStyle: const TextStyle(
-                                          color: Colors.white60),
+                                      hintStyle:
+                                          TextStyle(color: Colors.white60),
                                       border: InputBorder.none)),
                             ),
                           )),

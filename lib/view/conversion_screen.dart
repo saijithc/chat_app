@@ -4,7 +4,7 @@ import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class Conversation extends StatefulWidget {
-  Conversation(
+  const Conversation(
       {Key? key,
       required this.chatRoomId,
       required this.userName,
@@ -33,7 +33,7 @@ class _ConversationState extends State<Conversation> {
                 itemBuilder: (context, index) {
                   return MessageTile(
                       isSendByMe: snapshot.data.docs[index].data()["sendBy"] ==
-                          constants.myName,
+                          Constants.myName,
                       message: snapshot.data.docs[index].data()["message"]);
                 })
             : Container();
@@ -45,7 +45,7 @@ class _ConversationState extends State<Conversation> {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> messageMap = {
         "message": messageController.text,
-        "sendBy": constants.myName,
+        "sendBy": Constants.myName,
         "time": DateTime.now().millisecondsSinceEpoch
       };
 

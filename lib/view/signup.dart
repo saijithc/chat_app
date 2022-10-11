@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chat_app/helper/helperfuncction.dart';
 import 'package:chat_app/services/auth.dart';
 import 'package:chat_app/services/database.dart';
@@ -63,9 +61,7 @@ class _SignUpState extends State<SignUp> {
       body: Padding(
         padding: const EdgeInsets.only(right: 20, left: 20),
         child: isLoading
-            ? Container(
-                child: const Center(child: CircularProgressIndicator()),
-              )
+            ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

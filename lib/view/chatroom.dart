@@ -32,15 +32,18 @@ class _ChatRoomState extends State<ChatRoom> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  // log(snapshot.data.docs[index].data()['email'].toString());
+                  log(snapshot.data.docs[index]
+                      .data()["chatroomId"]
+                      .toString()
+                      .replaceAll("_", "")
+                      .replaceAll(Constants.myName, ""));
                   return ChatRoomTile(
-                      // userEmail:
-                      //     snapshot.data.docs[index].data()['email'].toString(),
+                      email: snapshot.data.docs[index].data()["userEmail"],
                       userName: snapshot.data.docs[index]
                           .data()["chatroomId"]
                           .toString()
                           .replaceAll("_", "")
-                          .replaceAll(constants.myName, ""),
+                          .replaceAll(Constants.myName, ""),
                       chatRooomId:
                           snapshot.data.docs[index].data()["chatroomId"]);
                 })
@@ -57,12 +60,13 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getUserInfo() async {
-    constants.myName = (await HelperFunction.getUserNameSharedPreference())!;
-    databaseMethods.getChatRooms(constants.myName).then((val) {
+    Constants.myName = (await HelperFunction.getUserNameSharedPreference())!;
+    databaseMethods.getChatRooms(Constants.myName).then((val) {
       setState(() {
         chatRoomsStream = val;
       });
     });
+
     setState(() {});
   }
 
@@ -78,7 +82,7 @@ class _ChatRoomState extends State<ChatRoom> {
           children: <Widget>[
             DrawerHeader(
               child: CircleAvatar(
-                child: Center(child: Text(constants.myName)
+                child: Center(child: Text(Constants.myName)
                     // text(constants.myName.toUpperCase(), Colors.white, "")
                     ),
               ),
@@ -97,7 +101,7 @@ class _ChatRoomState extends State<ChatRoom> {
               onTap: () {
                 auth.signOut();
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (ctx) => Authenticate()));
+                    MaterialPageRoute(builder: (ctx) => const Authenticate()));
               },
               leading: const Icon(
                 Icons.power_settings_new,
@@ -131,11 +135,11 @@ class ChatRoomTile extends StatelessWidget {
   ChatRoomTile(
       {Key? key,
       required this.userName,
-      // required this.userEmail,
-      required this.chatRooomId})
+      required this.chatRooomId,
+      required this.email})
       : super(key: key);
   final String userName;
-  // final String userEmail;
+  final String email;
   final String chatRooomId;
   final DatabaseMethods databaseMethods = DatabaseMethods();
   @override
@@ -151,19 +155,14 @@ class ChatRoomTile extends StatelessWidget {
             color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          // color: Colors.amber,
-          // height: height * 0.05,
           child: userName.isNotEmpty
               ? ListTile(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (ctx) => Conversation(
-                              chatRoomId: chatRooomId,
-                              userName: userName,
-                              email: databaseMethods
-                                  .getEmailByUserName(userName)
-                                  .toString(),
-                            )));
+                            chatRoomId: chatRooomId,
+                            userName: userName,
+                            email: email)));
                   },
                   leading: CircleAvatar(
                     radius: 30,
