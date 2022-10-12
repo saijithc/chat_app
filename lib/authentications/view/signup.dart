@@ -1,53 +1,13 @@
-import 'package:chat_app/helper/helperfuncction.dart';
-import 'package:chat_app/services/auth.dart';
-import 'package:chat_app/services/database.dart';
-import 'package:chat_app/view/chatroom.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class SignUp extends StatefulWidget {
-  // const SignUp({Key? key, this.toggle}) : super(key: key);
-  // final Function? toggle;.
-  SignUp(this.toggle);
+import '../controller/aurhentication_controller.dart';
+
+class SignUp extends StatelessWidget {
+  SignUp({Key? key, required this.toggle}) : super(key: key);
   final Function toggle;
-
-  @override
-  State<SignUp> createState() => _SignUpState();
-}
-
-class _SignUpState extends State<SignUp> {
-  AuthMethods authMethods = AuthMethods();
-  DatabaseMethods databaseMethods = DatabaseMethods();
-
-  bool isLoading = false;
-  final formKey = GlobalKey<FormState>();
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  signMeUp() {
-    if (formKey.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
-      authMethods
-          .signUpWithEmailAndPassword(
-              emailController.text.trim(), passwordController.text.trim())
-          .then((val) {
-        Map<String, String> userInfoMap = {
-          "name": userNameController.text,
-          "email": emailController.text
-        };
-        HelperFunction.saveUserEmailSharedPreference(emailController.text);
-        HelperFunction.saveUserNameSharedPreference(userNameController.text);
-        databaseMethods.uploadUserInfo(userInfoMap);
-        HelperFunction.saveUserLoggedInSharedPreference(true);
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (ctx) => const ChatRoom()));
-      });
-    }
-  }
-
+  final Authentication controller = Get.put(Authentication());
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -56,18 +16,18 @@ class _SignUpState extends State<SignUp> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: text("chat App", Colors.amber, height * 0.03),
+        title: text("chat App", Colors.white, height * 0.03),
       ),
       body: Padding(
         padding: const EdgeInsets.only(right: 20, left: 20),
-        child: isLoading
+        child: controller.loading
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Form(
-                      key: formKey,
+                      key: controller.signUPformKey,
                       child: Column(
                         children: [
                           SizedBox(
@@ -79,7 +39,7 @@ class _SignUpState extends State<SignUp> {
                                     ? "Please provide Username"
                                     : null;
                               },
-                              controller: userNameController,
+                              controller: controller.userNameController,
                               style: simpleTextFieldStyle(Colors.white),
                               decoration: textFieldInputDecoration("username")),
                           SizedBox(height: height * 0.03),
@@ -91,7 +51,7 @@ class _SignUpState extends State<SignUp> {
                                     ? null
                                     : "please provide a valid email id";
                               },
-                              controller: emailController,
+                              controller: controller.emailController,
                               style: simpleTextFieldStyle(Colors.white),
                               decoration: textFieldInputDecoration("email")),
                           SizedBox(height: height * 0.03),
@@ -102,7 +62,7 @@ class _SignUpState extends State<SignUp> {
                                     ? null
                                     : "Please should contain minimum 6 characters";
                               },
-                              controller: passwordController,
+                              controller: controller.passwordController,
                               style: simpleTextFieldStyle(Colors.white),
                               decoration: textFieldInputDecoration("password")),
                         ],
@@ -123,7 +83,7 @@ class _SignUpState extends State<SignUp> {
                               child: text(
                                   "Sign Up", Colors.white, height * 0.02))),
                       onTap: () {
-                        signMeUp();
+                        controller.signMeUp();
                       },
                     ),
                     SizedBox(
@@ -155,7 +115,7 @@ class _SignUpState extends State<SignUp> {
                         GestureDetector(
                           child: text("SignIn now", Colors.blue, height * 0.02),
                           onTap: () {
-                            widget.toggle();
+                            toggle();
                           },
                         )
                       ],

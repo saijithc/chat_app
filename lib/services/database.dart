@@ -4,11 +4,6 @@ import 'package:get/get.dart';
 
 class DatabaseMethods {
   getUserByName(String username) async {
-    //   return await FirebaseFirestore.instance
-    //       .collection("users")
-    //       .where("name", isEqualTo: username)
-    //       .get();
-
     List accounts = [];
     accounts.clear();
     var collection = await FirebaseFirestore.instance

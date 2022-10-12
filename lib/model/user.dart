@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Users {
   String userId;
   Users({required this.userId});

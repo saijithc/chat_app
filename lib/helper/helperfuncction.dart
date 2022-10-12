@@ -39,4 +39,10 @@ class HelperFunction {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(sharedPreferenceUesrEmailKey);
   }
+
+  //...............clearing data from shared prefernce..
+  static clearUserLoggedInSharedPreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+  }
 }

@@ -1,17 +1,15 @@
-import 'package:chat_app/view/signin.dart';
-import 'package:chat_app/view/signup.dart';
+import 'package:chat_app/authentications/view/signin.dart';
+import 'package:chat_app/authentications/view/signup.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
-
   @override
   State<Authenticate> createState() => _AuthenticateState();
 }
 
 class _AuthenticateState extends State<Authenticate> {
   bool showSignin = true;
-
   toggleView() {
     setState(() {
       showSignin = !showSignin;
@@ -21,9 +19,13 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (showSignin) {
-      return Signin(toggleView);
+      return Signin(
+        toggle: toggleView,
+      );
     } else {
-      return SignUp(toggleView);
+      return SignUp(
+        toggle: toggleView,
+      );
     }
   }
 }

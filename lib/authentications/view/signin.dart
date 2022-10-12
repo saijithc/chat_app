@@ -1,57 +1,12 @@
-import 'package:chat_app/helper/helperfuncction.dart';
-import 'package:chat_app/services/auth.dart';
-import 'package:chat_app/services/database.dart';
-import 'package:chat_app/view/chatroom.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controller/aurhentication_controller.dart';
 
-class Signin extends StatefulWidget {
-  // const Signin({Key? key, required this.toggle}) : super(key: key);
+class Signin extends StatelessWidget {
+  Signin({Key? key, required this.toggle}) : super(key: key);
+  final Authentication controller = Get.put(Authentication());
   final Function toggle;
-  Signin(this.toggle);
-  @override
-  State<Signin> createState() => _SigninState();
-}
-
-class _SigninState extends State<Signin> {
-  final formKey = GlobalKey<FormState>();
-  AuthMethods authMethods = AuthMethods();
-  DatabaseMethods databaseMethods = DatabaseMethods();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  bool isLoading = false;
-  dynamic snapshotUserInfo;
-  signIn() {
-    if (formKey.currentState!.validate()) {
-      HelperFunction.saveUserEmailSharedPreference(emailController.text);
-      databaseMethods.getUserByEmail(emailController.text).then((val) {
-        snapshotUserInfo = val;
-        // HelperFunction.saveUserEmailSharedPreference(
-        //     snapshotUserInfo.docs[0].get("name"));
-        HelperFunction.saveUserNameSharedPreference(
-            snapshotUserInfo.docs[0].get("name"));
-        // print(
-        //     "${snapshotUserInfo.docs[0].get("name")}........heeeeeeeeeyyyyyyyyyy");
-      });
-      setState(() {
-        isLoading = true;
-      });
-
-      authMethods
-          .signInWithEmailAndPassword(
-              emailController.text.trim(), passwordController.text.trim())
-          .then((val) {
-        if (val != null) {
-          // HelperFunction.saveUserNameSharedPreference(userNameController.text);
-
-          HelperFunction.saveUserLoggedInSharedPreference(true);
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (ctx) => const ChatRoom()));
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -60,7 +15,7 @@ class _SigninState extends State<Signin> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: text("chat App", Colors.amber, height * 0.03),
+        title: text("chat App", Colors.white, height * 0.03),
       ),
       body: Padding(
         padding: const EdgeInsets.only(right: 20, left: 20),
@@ -68,7 +23,7 @@ class _SigninState extends State<Signin> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Form(
-              key: formKey,
+              key: controller.formKey,
               child: Column(
                 children: [
                   TextFormField(
@@ -79,7 +34,7 @@ class _SigninState extends State<Signin> {
                             ? null
                             : "please provide a valid email id";
                       },
-                      controller: emailController,
+                      controller: controller.emailController,
                       style: simpleTextFieldStyle(Colors.white),
                       decoration: textFieldInputDecoration("email")),
                   SizedBox(height: height * 0.05),
@@ -90,7 +45,7 @@ class _SigninState extends State<Signin> {
                             ? null
                             : "Please should contain minimum 6 characters";
                       },
-                      controller: passwordController,
+                      controller: controller.passwordController,
                       style: simpleTextFieldStyle(Colors.white),
                       decoration: textFieldInputDecoration("password")),
                 ],
@@ -116,7 +71,7 @@ class _SigninState extends State<Signin> {
                   child: Center(
                       child: text("Sign In", Colors.white, height * 0.02))),
               onTap: () {
-                signIn();
+                controller.signIn();
               },
             ),
             SizedBox(
@@ -147,9 +102,7 @@ class _SigninState extends State<Signin> {
                 InkWell(
                   child: text("Register now", Colors.blue, height * 0.02),
                   onTap: () {
-                    widget.toggle();
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(builder: (ctx) =>  SignUp()));
+                    toggle();
                   },
                 )
               ],
