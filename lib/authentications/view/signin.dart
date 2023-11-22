@@ -15,10 +15,17 @@ class Signin extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: text("chat App", Colors.white, height * 0.03),
+        title: text(
+          "Sync",
+          Colors.white,
+          height * 0.03,
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(right: 20, left: 20),
+        padding: const EdgeInsets.only(
+          right: 20,
+          left: 20,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -27,27 +34,29 @@ class Signin extends StatelessWidget {
               child: Column(
                 children: [
                   TextFormField(
-                      validator: (val) {
-                        return RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(val!)
-                            ? null
-                            : "please provide a valid email id";
-                      },
-                      controller: controller.emailController,
-                      style: simpleTextFieldStyle(Colors.white),
-                      decoration: textFieldInputDecoration("email")),
+                    validator: (val) {
+                      return RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(val!)
+                          ? null
+                          : "please provide a valid email id";
+                    },
+                    controller: controller.emailController,
+                    style: simpleTextFieldStyle(Colors.white),
+                    decoration: textFieldInputDecoration("email"),
+                  ),
                   SizedBox(height: height * 0.05),
                   TextFormField(
-                      obscureText: true,
-                      validator: (val) {
-                        return val!.length >= 6
-                            ? null
-                            : "Please should contain minimum 6 characters";
-                      },
-                      controller: controller.passwordController,
-                      style: simpleTextFieldStyle(Colors.white),
-                      decoration: textFieldInputDecoration("password")),
+                    obscureText: true,
+                    validator: (val) {
+                      return val!.length >= 6
+                          ? null
+                          : "Please should contain minimum 6 characters";
+                    },
+                    controller: controller.passwordController,
+                    style: simpleTextFieldStyle(Colors.white),
+                    decoration: textFieldInputDecoration("password"),
+                  ),
                 ],
               ),
             ),
@@ -55,7 +64,11 @@ class Signin extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                text("Forgot password ?", Colors.blue, height * 0.015)
+                text(
+                  "Forgot password ?",
+                  Colors.blue,
+                  height * 0.015,
+                ),
               ],
             ),
             SizedBox(
@@ -63,13 +76,19 @@ class Signin extends StatelessWidget {
             ),
             InkWell(
               child: Container(
-                  height: height * 0.05,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      color: Colors.blue),
-                  width: width,
-                  child: Center(
-                      child: text("Sign In", Colors.white, height * 0.02))),
+                height: height * 0.05,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    color: Colors.blue),
+                width: width,
+                child: Center(
+                  child: text(
+                    "Sign In",
+                    Colors.white,
+                    height * 0.02,
+                  ),
+                ),
+              ),
               onTap: () {
                 controller.signIn();
               },
@@ -79,28 +98,36 @@ class Signin extends StatelessWidget {
             ),
             InkWell(
               child: Container(
-                  height: height * 0.05,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      color: Colors.white),
-                  width: width,
-                  child: Center(
-                      child: text(
-                          "Sign In with Google",
-                          const Color.fromARGB(255, 126, 125, 125),
-                          height * 0.02))),
+                height: height * 0.05,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    color: Colors.white),
+                width: width,
+                child: Center(
+                  child: text("Sign In with Google",
+                      const Color.fromARGB(255, 126, 125, 125), height * 0.02),
+                ),
+              ),
               onTap: () {},
             ),
             SizedBox(height: height * 0.02),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                text("Don't have account?", Colors.white, height * 0.02),
+                text(
+                  "Don't have account?",
+                  Colors.white,
+                  height * 0.02,
+                ),
                 SizedBox(
                   width: width * 0.02,
                 ),
                 InkWell(
-                  child: text("Register now", Colors.blue, height * 0.02),
+                  child: text(
+                    "Register now",
+                    Colors.blue,
+                    height * 0.02,
+                  ),
                   onTap: () {
                     toggle();
                   },

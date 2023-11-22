@@ -4,13 +4,14 @@ import 'package:get/get.dart';
 
 class DatabaseMethods {
   getUserByName(String username) async {
+    print("value 2");
     List accounts = [];
     accounts.clear();
     var collection = await FirebaseFirestore.instance
         .collection("users")
         .get()
         .then((value) => value.docs);
-
+    print("value 3 collection =$collection");
     for (var user in collection) {
       if (user.get("name").toString().contains(username)) {
         accounts.add(user);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/screens/search/searchlist.dart';
 import 'package:chat_app/services/database.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,10 @@ class _SearchScreenState extends State<SearchScreen> {
   dynamic searchSnapshot;
   initiateSearch() {
     if (searchController.text.isNotEmpty) {
+      print("value 1");
       databaseMethods.getUserByName(searchController.text).then((val) {
         setState(() {
+          print("searchSnapshot =$val");
           searchSnapshot = val;
         });
       });
@@ -54,6 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Center(
                               child: TextField(
                                   onChanged: (value) {
+                                    print("value =$value");
                                     initiateSearch();
                                   },
                                   controller: searchController,
